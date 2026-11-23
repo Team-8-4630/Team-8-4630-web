@@ -4,35 +4,42 @@ import axios from "axios";
 type Product = {
   id: number;
   name: string;
+  description: string;
   brand: string;
   price: number;
   rating: number;
   numberOfReviews: number;
   imageUrl: string;
 };
+
 const emptyProducts: Product[] = [];
 
 function Products() {
-  const [products, setProducts]: [Product[], (products: Product[]) => void] = useState(emptyProducts);
+  const [products, setProducts]: [Product[], (products: Product[]) => void] =
+    useState(emptyProducts);
+
   useEffect(() => {
-    axios.get<Product[]>("https://localhost:7250/catalog",
-      {
+    axios
+      .get<Product[]>("https://psychic-meme-gx7rgr7554w7c7ww-5166.app.github.dev/catalog", {
         headers: {
           "Content-Type": "application/json",
         },
       })
       .then((response) => setProducts(response.data))
       .catch((error) => console.log(error));
-    
+  }, []);
 
-    }, []);
   return (
     <div className="content">
       <ul className="products">
-        {products.map((product, index) => (
-          <li key={index}>
+        {products.map((product) => (
+          <li key={product.id}>
             <div className="product">
-              <img className="product-image" src={product.imageUrl} alt="product" />
+              <img
+                className="product-image"
+                src={product.imageUrl}
+                alt="product"
+              />
               <div className="product-name">
                 <a href="product.html">{product.name}</a>
               </div>
